@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace B3Smart.API.Controllers
 {
@@ -6,7 +7,7 @@ namespace B3Smart.API.Controllers
     [Route("api/[controller]")]
     public class CdbController : ControllerBase
     {
-        [HttpPost("cacular")]
+        [HttpPost("calcular")]
         public ActionResult<ResultadoCdbDto> Calcular([FromBody] CalculoCdbDto input)
         {
             decimal valorFinalBruto = CalcularValorFinal(input.ValorInicial, input.PrazoMeses);
@@ -14,8 +15,8 @@ namespace B3Smart.API.Controllers
 
             return Ok(new ResultadoCdbDto
             {
-                ValorBruto = valorFinalBruto,
-                ValorLiquido = valorFinalLiquido
+                ValorBruto = valorFinalBruto.ToString("C", new CultureInfo("pt-BR")),
+                ValorLiquido = valorFinalLiquido.ToString("C", new CultureInfo("pt-BR"))
             });
         }
 
@@ -61,7 +62,7 @@ namespace B3Smart.API.Controllers
 
     public class ResultadoCdbDto
     {
-        public decimal ValorBruto { get; set; }
-        public decimal ValorLiquido { get; set; }
+        public string ValorBruto { get; set; }
+        public string ValorLiquido { get; set; }
     }
 }
